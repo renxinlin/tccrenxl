@@ -142,7 +142,7 @@ public class RecoverScheduledJob implements InitializingBean {
                 TransactionStatus transactionStatus = transactionInfo.getTransactionStatus();
                 // 获取业务对象
                 Class target = metadata.getTarget(); // TODO 可从spring容器获取
-                Object targetObject = target.newInstance();
+                Object targetObject = TccSpringContextUtil.getBean(target);
                 Method invokeMethod = null;
                 if (transactionStatus.getState() == Status.cancel) {
                     invokeMethod = targetObject.getClass().getMethod(metadata.getCancelMethodName(), metadata.getParams());
@@ -195,13 +195,7 @@ public class RecoverScheduledJob implements InitializingBean {
                     e.printStackTrace();
                 }
 
-            } catch (InstantiationException e) {
-                // 业务中try cancel confirm 配置错误或其他业务原因不做处理
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                // 业务中try cancel confirm 配置错误或其他业务原因不做处理
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
+            } catch (Throwable e) {
                 // 业务中try cancel confirm 配置错误或其他业务原因不做处理
                 e.printStackTrace();
             }

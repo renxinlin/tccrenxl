@@ -67,23 +67,13 @@ public class TransactionManager extends AabstractTransactionManager implements I
         try {
             BizMetadata metadata = transactionInfo.getMetadata();
             Class target = metadata.getTarget();
-            Object targetObject = target.newInstance();
+            Object targetObject = TccSpringContextUtil.getBean(target);
             Class[] params = metadata.getParams();
             Method invokeMethod = target.getDeclaredMethod(metadata.getConfirmmMethodName(), params);
             invokeMethod.invoke(targetObject, metadata.getParamsValues());
-        } catch (InstantiationException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             throw new TransactionException();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            throw new TransactionException();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-            throw new TransactionException();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-            throw new TransactionException();
-
         }
     }
 
@@ -92,20 +82,11 @@ public class TransactionManager extends AabstractTransactionManager implements I
         try {
             BizMetadata metadata = transactionInfo.getMetadata();
             Class target = metadata.getTarget();
-            Object targetObject = target.newInstance();
+            Object targetObject = TccSpringContextUtil.getBean(target);
             Method invokeMethod = target.getDeclaredMethod(metadata.getCancelMethodName(), metadata.getParams());
             Object[] paramsValues = metadata.getParamsValues();
             invokeMethod.invoke(targetObject, paramsValues);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-            throw new TransactionException();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            throw new TransactionException();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-            throw new TransactionException();
-        } catch (InvocationTargetException e) {
+        }  catch (Throwable e) {
             e.printStackTrace();
             throw new TransactionException();
         }

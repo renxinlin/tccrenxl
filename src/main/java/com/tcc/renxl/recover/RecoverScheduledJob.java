@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Data
 public class RecoverScheduledJob implements InitializingBean {
+    private int maxSleepTime;
     private int sleepTime = 1;
     private ThreadPoolExecutor threadPoolExecutor;
     // 获取一次需要处理的待恢复事务总数
@@ -54,6 +55,10 @@ public class RecoverScheduledJob implements InitializingBean {
         if (sleepTime <= 0) {
             sleepTime = 1;
         }
+        if(maxSleepTime <= 0 ){
+            maxSleepTime  = 300;
+        }
+
         if(manualRecoveryMinute <=0){
             manualRecoveryMinute = 1*60*5;
         }
@@ -95,7 +100,7 @@ public class RecoverScheduledJob implements InitializingBean {
                                     log.info(" no  RecoverTransactionInfo need to do , its will be waiting for {} seconds",sleepTime );
                                 }
                                 // 如果是被唤醒,则sleepTime = 会被重置为1;
-                                sleepTime = sleepTime*2;
+                                sleepTime =sleepTime >= 300 ? maxSleepTime: sleepTime*2;
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }

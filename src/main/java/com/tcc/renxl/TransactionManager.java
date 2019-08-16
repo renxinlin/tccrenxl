@@ -70,8 +70,6 @@ public class TransactionManager extends AabstractTransactionManager implements I
             Object targetObject = target.newInstance();
             Class[] params = metadata.getParams();
             Method invokeMethod = target.getDeclaredMethod(metadata.getConfirmmMethodName(), params);
-            Object aClass = params[0].newInstance();
-
             invokeMethod.invoke(targetObject, metadata.getParamsValues());
         } catch (InstantiationException e) {
             e.printStackTrace();
@@ -97,7 +95,6 @@ public class TransactionManager extends AabstractTransactionManager implements I
             Object targetObject = target.newInstance();
             Method invokeMethod = target.getDeclaredMethod(metadata.getCancelMethodName(), metadata.getParams());
             Object[] paramsValues = metadata.getParamsValues();
-
             invokeMethod.invoke(targetObject, paramsValues);
         } catch (InstantiationException e) {
             e.printStackTrace();

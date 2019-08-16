@@ -22,4 +22,9 @@
           public RestResult test2_1(Product product){
            }
            
-       备注：目前只支持使用redis存储事务信息 
+       备注：目前只支持使用redis存储事务信息
+       
+       
+# 作者联系
+    email :2284075845@qq.com
+    微信公众号: 阿新小栈 

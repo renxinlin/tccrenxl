@@ -100,7 +100,7 @@ public class RecoverScheduledJob implements InitializingBean {
                                     log.info(" no  RecoverTransactionInfo need to do , its will be waiting for {} seconds",sleepTime );
                                 }
                                 // 如果是被唤醒,则sleepTime = 会被重置为1;
-                                sleepTime =sleepTime >= 300 ? maxSleepTime: sleepTime*2;
+                                sleepTime =sleepTime >= maxSleepTime ? maxSleepTime: sleepTime*2;
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
